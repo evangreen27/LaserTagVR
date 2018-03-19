@@ -17,8 +17,11 @@ public class ShotBehavior : MonoBehaviour {
 
     void OnCollisionEnter(Collision collisionInfo)
     {
-        Vector3 refl = collisionInfo.contacts[0].normal;
-        transform.forward = Vector3.Reflect((transform.position - oldpos).normalized, refl);
-        print(collisionInfo.collider.gameObject.name);
+        if (!collisionInfo.gameObject.CompareTag("ignore"))
+        {
+            Vector3 refl = collisionInfo.contacts[0].normal;
+            transform.forward = Vector3.Reflect((transform.position - oldpos).normalized, refl);
+            print(collisionInfo.collider.gameObject.name);
+        }
     }
 }
