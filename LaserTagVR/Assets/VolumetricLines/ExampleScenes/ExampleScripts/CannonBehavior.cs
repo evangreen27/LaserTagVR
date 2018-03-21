@@ -6,7 +6,8 @@ public class CannonBehavior : MonoBehaviour {
 	public Transform m_cannonRot;
 	public Transform m_muzzle;
 	public GameObject m_shotPrefab;
-	public Texture2D m_guiTexture;
+    public GameObject m_telePrefab;
+    public Texture2D m_guiTexture;
 
 	// Use this for initialization
 	void Start () 
@@ -17,19 +18,17 @@ public class CannonBehavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Input.GetKey(KeyCode.LeftArrow))
-		{
-			m_cannonRot.transform.Rotate(Vector3.up, -Time.deltaTime * 100f);
-		}
-		if (Input.GetKey(KeyCode.RightArrow))
-		{
-			m_cannonRot.transform.Rotate(Vector3.up, Time.deltaTime * 100f);
-		}
-		if (Input.GetKeyDown(KeyCode.R))
+		if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
 		{
 			GameObject go = GameObject.Instantiate(m_shotPrefab, m_muzzle.position, m_muzzle.rotation) as GameObject;
 			GameObject.Destroy(go, 3f);
 		}
-	}
+
+        if (OVRInput.GetDown(OVRInput.RawButton.LIndexTrigger))
+        {
+            GameObject ge = GameObject.Instantiate(m_telePrefab, m_muzzle.position, m_muzzle.rotation) as GameObject;
+            GameObject.Destroy(ge, 5f);
+        }
+    }
 
 }

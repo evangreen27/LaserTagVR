@@ -211,7 +211,7 @@ public class OvrAvatarComponent : MonoBehaviour
                     ((OvrAvatarSkinnedMeshRenderPBSComponent)renderComponent).UpdateSkinnedMeshRenderPBS(avatar, renderPart, material);
                     break;
                 case ovrAvatarRenderPartType.ProjectorRender:
-                    ((OvrAvatarProjectorRenderComponent)renderComponent).UpdateProjectorRender(this, CAPI.ovrAvatarRenderPart_GetProjectorRender(renderPart));
+                    //((OvrAvatarProjectorRenderComponent)renderComponent).UpdateProjectorRender(this, CAPI.ovrAvatarRenderPart_GetProjectorRender(renderPart));
                     break;
                 default:
                     break;

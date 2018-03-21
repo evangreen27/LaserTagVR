@@ -59,6 +59,7 @@ public class selectionray : MonoBehaviour
             lineRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             lineRenderer.receiveShadows = false;
             lineRenderer.widthMultiplier = 0.02f;
+            lineRenderer.tag = "raycast";
         }
     }
 
@@ -121,7 +122,7 @@ public class selectionray : MonoBehaviour
             //print(hit.collider.gameObject.transform.name);
             //check if the trigger is held, if so then move the object to the xy position of the ray?
         }
-        if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
+        if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger))
         {
             //when first pressing, select an object
             print("trigger pressed");
@@ -154,7 +155,7 @@ public class selectionray : MonoBehaviour
                 selectedObj = TV;
             }
         }
-        if (OVRInput.GetUp(OVRInput.RawButton.RIndexTrigger))
+        if (OVRInput.GetUp(OVRInput.RawButton.RHandTrigger))
         {
             //when first pressing, select an object
             print("trigger released");
