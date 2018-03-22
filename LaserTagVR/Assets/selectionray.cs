@@ -7,6 +7,11 @@ public class selectionray : MonoBehaviour
     [System.Serializable]
     public class Callback : UnityEvent<Ray, RaycastHit> { }
 
+    public GameObject M4;
+    public GameObject AK;
+    public GameObject UMP;
+    public GameObject PISTOL;
+
     public Transform leftHandAnchor = null;
     public Transform rightHandAnchor = null;
     public Transform centerEyeAnchor = null;
@@ -82,7 +87,7 @@ public class selectionray : MonoBehaviour
                 return leftHandAnchor;
             }
 
-            print("return eyetracker");
+            //print("return eyetracker");
             // If no controllers are connected, we use ray from the view camera. 
             // This looks super ackward! Should probably fall back to a simple reticle!
             return centerEyeAnchor;
@@ -122,13 +127,63 @@ public class selectionray : MonoBehaviour
             //print(hit.collider.gameObject.transform.name);
             //check if the trigger is held, if so then move the object to the xy position of the ray?
         }
-        if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger))
+        if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger) || Input.GetMouseButton(0))
         {
             //when first pressing, select an object
-            print("trigger pressed");
+            
+
+            if (hit.collider.gameObject.name.Equals("Terrain"))
+                return;
+
+
+            if (hit.collider.gameObject.CompareTag("gun"))
+            {
+                string name = hit.collider.gameObject.name;
+                print(name);
+                if (name.Contains("M4")) {
+                    Destroy(hit.collider.gameObject);
+                    M4.SetActive(true);
+                    AK.SetActive(false);
+                    UMP.SetActive(false);
+                    PISTOL.SetActive(false);
+                }
+
+                else if (name.Contains("Ak"))
+                {
+                    Destroy(hit.collider.gameObject);
+                    M4.SetActive(false);
+                    AK.SetActive(true);
+                    UMP.SetActive(false);
+                    PISTOL.SetActive(false);
+                }
+
+                else if (name.Contains("UMP"))
+                {
+                    Destroy(hit.collider.gameObject);
+                    M4.SetActive(false);
+                    AK.SetActive(false);
+                    UMP.SetActive(true);
+                    PISTOL.SetActive(false);
+                }
+
+                else if (name.Contains("Pistol"))
+                {
+                    Destroy(hit.collider.gameObject);
+                    M4.SetActive(false);
+                    AK.SetActive(false);
+                    UMP.SetActive(false);
+                    PISTOL.SetActive(true);
+                }
+
+                return;
+            }
+
+
             selectedObj = hit.collider.gameObject;
             startingz = Vector3.Distance(this.transform.position, hit.collider.gameObject.transform.position);
             startingrot = hit.collider.gameObject.transform.rotation;
+
+
             if (selectedObj.transform.Find("BtnChair"))
             {
                 GameObject chair = (GameObject)Instantiate(ChairPrefab, laserPointer.GetPoint(3), selectedObj.transform.rotation);

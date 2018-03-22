@@ -2452,6 +2452,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04dc76ed55c84774e93bdde190702746, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  M4: {fileID: 546293394}
+  AK: {fileID: 1101309304}
+  UMP: {fileID: 1880884675}
+  PISTOL: {fileID: 738583838}
   leftHandAnchor: {fileID: 838976561}
   rightHandAnchor: {fileID: 1800270288}
   centerEyeAnchor: {fileID: 304897993}
@@ -13214,6 +13218,10 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 445910, guid: c63ea781a273235439e583799176c846, type: 2}
   m_PrefabInternal: {fileID: 1094916429}
+--- !u!1 &1101309304 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: cd8d56469cf64654eaa21e15c6ae7c18, type: 3}
+  m_PrefabInternal: {fileID: 1164772068}
 --- !u!1001 &1115288088
 Prefab:
   m_ObjectHideFlags: 0
@@ -14971,6 +14979,7 @@ GameObject:
   - component: {fileID: 1220113423}
   - component: {fileID: 1220113422}
   - component: {fileID: 1220113426}
+  - component: {fileID: 1220113427}
   m_Layer: 0
   m_Name: ControlObjects
   m_TagString: Untagged
@@ -15045,6 +15054,21 @@ MonoBehaviour:
   prev: 5
   timeToNext: 5
   targetsShot: 1
+--- !u!114 &1220113427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1220113421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bad273eb648bc6745b93c54659359ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AK: {fileID: 1941903895882750, guid: 144c212abb4aae6448de1a9d7ae1f3df, type: 2}
+  M4: {fileID: 1181477004840460, guid: 420e147aeaecca1408a972562d2bcd0d, type: 2}
+  pistol: {fileID: 1801418762578990, guid: f859baa080b3bcf41b7a407c5d7d86cd, type: 2}
+  UMP: {fileID: 1172145973086710, guid: 63d5d23de74556a419af8673929b8bb4, type: 2}
 --- !u!1001 &1246716775
 Prefab:
   m_ObjectHideFlags: 0
@@ -24106,6 +24130,10 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 442488, guid: ec78ebca7517fb745a45a931cb06d2bd, type: 2}
   m_PrefabInternal: {fileID: 1872062520}
+--- !u!1 &1880884675 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 5112e6444b23577429168ceb76476ae4, type: 3}
+  m_PrefabInternal: {fileID: 1355666682}
 --- !u!1 &1885964244
 GameObject:
   m_ObjectHideFlags: 0
