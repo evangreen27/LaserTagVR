@@ -5,9 +5,10 @@ using UnityEngine;
 public class SpawnTargets : MonoBehaviour {
 
     public GameObject TargetPrefab;
-    public float prev = 5.0f;
     public float timeToNext = 5.0f;
-    public float targetsShot = 0;
+    public float spawnrate;
+    public float targetsShot = 1;
+    public float targetSize;
 	// Use this for initialization
 	void Start () {
 		
@@ -17,10 +18,9 @@ public class SpawnTargets : MonoBehaviour {
 	void Update () {
 		if(timeToNext <= 0)
         {
-            GameObject.Instantiate(TargetPrefab, new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(9.5f, 10.0f), Random.Range(-10.0f, 10.0f)), Quaternion.Euler(0, 0, 0));
-            if(prev > 0.4f)
-                prev -= 0.2f;
-            timeToNext = prev;
+            GameObject targ = GameObject.Instantiate(TargetPrefab, new Vector3(Random.Range(-100.0f, 100.0f), Random.Range(3f, 30.0f), Random.Range(-100.0f, 100.0f)), Quaternion.Euler(0, 0, 0));
+            targ.transform.localScale = new Vector3(targetSize / 5, targetSize / 5, targetSize / 5);
+            timeToNext = spawnrate;
         }
         else
         {

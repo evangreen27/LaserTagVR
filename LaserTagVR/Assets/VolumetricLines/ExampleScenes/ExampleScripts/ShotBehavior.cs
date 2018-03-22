@@ -3,8 +3,9 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class ShotBehavior : MonoBehaviour {
-
+    GameObject selected;
     Vector3 oldpos;
+    public GameObject control;
     // Use this for initialization
     void Start () {
         oldpos = transform.position;
@@ -67,6 +68,69 @@ public class ShotBehavior : MonoBehaviour {
             else
             {
                 dropdown.GetComponent<Dropdown>().Show();
+            }
+        }
+        else if (other.gameObject.name == "TargetSize" || other.gameObject.name == "SpawnRate")
+        {
+            GameObject input = other.gameObject;
+            selected = input.transform.GetChild(1).gameObject;
+            selected.GetComponent<Text>().text = "";
+        }
+        else if (other.gameObject.name == "OneBtn")
+        {
+            selected.GetComponent<Text>().text += "1";
+        }
+        else if (other.gameObject.name == "TwoBtn")
+        {
+            selected.GetComponent<Text>().text += "2";
+        }
+        else if (other.gameObject.name == "ThreeBtn")
+        {
+            selected.GetComponent<Text>().text += "3";
+        }
+        else if (other.gameObject.name == "FourBtn")
+        {
+            selected.GetComponent<Text>().text += "4";
+        }
+        else if (other.gameObject.name == "FiveBtn")
+        {
+            selected.GetComponent<Text>().text += "5";
+        }
+        else if (other.gameObject.name == "SixBtn")
+        {
+            selected.GetComponent<Text>().text += "6";
+        }
+        else if (other.gameObject.name == "SevenBtn")
+        {
+            selected.GetComponent<Text>().text += "7";
+        }
+        else if (other.gameObject.name == "EightBtn")
+        {
+            selected.GetComponent<Text>().text += "8";
+        }
+        else if (other.gameObject.name == "NineBtn")
+        {
+            selected.GetComponent<Text>().text += "9";
+        }
+        else if (other.gameObject.name == "ZeroBtn")
+        {
+            selected.GetComponent<Text>().text += "0";
+        }
+        else if (other.gameObject.name == "ClearBtn")
+        {
+            selected.GetComponent<Text>().text = "";
+        }
+        else if (other.gameObject.name == "DotBtn")
+        {
+            selected.GetComponent<Text>().text += ".";
+        }
+        else if (other.gameObject.name == "EnterBtn")
+        {
+            if(selected.transform.parent.gameObject.name == "SpawnRate")
+                control.GetComponent<SpawnTargets>().spawnrate = float.Parse(selected.GetComponent<Text>().text);
+            else if(selected.transform.parent.gameObject.name == "TargetSize")
+            {
+                control.GetComponent<SpawnTargets>().targetSize = float.Parse(selected.GetComponent<Text>().text);
             }
         }
     }
