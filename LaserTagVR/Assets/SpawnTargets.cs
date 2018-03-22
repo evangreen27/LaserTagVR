@@ -42,6 +42,7 @@ public class SpawnTargets : MonoBehaviour {
             {
                 Destroy(i);
             }
+            targetsShot = 1;
         }
 	}
 
