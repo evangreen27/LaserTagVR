@@ -18,7 +18,7 @@ public class CannonBehavior : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Input.GetKeyDown(KeyCode.R))
+		if (OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
 		{
 			GameObject go = GameObject.Instantiate(m_shotPrefab, m_muzzle.position, m_muzzle.rotation) as GameObject;
 			GameObject.Destroy(go, 10f);

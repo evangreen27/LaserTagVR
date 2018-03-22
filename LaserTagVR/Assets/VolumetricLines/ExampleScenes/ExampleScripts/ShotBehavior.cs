@@ -10,17 +10,17 @@ public class ShotBehavior : MonoBehaviour {
     public Material lasercolor;
     public GameObject pop;
     public GameObject impact;
+    public float speed = 20f;
     // Use this for initialization
     void Start () {
         oldpos = transform.position;
         control = GameObject.Find("ControlObjects");
-
     }
 	
 	// Update is called once per frame
 	void Update () {
         oldpos = transform.position;
-        transform.position += transform.forward * Time.deltaTime * 10f;
+        transform.position += transform.forward * Time.deltaTime * speed;
     }
 
     void OnCollisionEnter(Collision collisionInfo)
@@ -29,6 +29,8 @@ public class ShotBehavior : MonoBehaviour {
         {
             if (collisionInfo.gameObject.CompareTag("target"))
             {
+
+                GameObject.Find("OVRCameraRig").GetComponent<selectionray>().StartCoroutine("Hitmarker");
                 GameObject g = GameObject.Instantiate(pop, collisionInfo.contacts[0].point, Quaternion.identity);
                 Destroy(g, 3f);
                 GameObject player = GameObject.Find("OVRCameraRig");
@@ -53,6 +55,7 @@ public class ShotBehavior : MonoBehaviour {
             }
             else
             {
+                Physics.IgnoreCollision(collisionInfo.collider, this.GetComponent<Collider>());
                 GameObject g = GameObject.Instantiate(impact, collisionInfo.contacts[0].point, Quaternion.identity);
                 Destroy(g, 3f);
                 Vector3 refl = collisionInfo.contacts[0].normal;
@@ -67,6 +70,8 @@ public class ShotBehavior : MonoBehaviour {
 
 
     }
+
+    
 
     private void OnTriggerEnter(Collider other)
     {

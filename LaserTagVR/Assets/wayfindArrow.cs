@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class wayfindArrow : MonoBehaviour {
     public GameObject Healthpack;
+    public GameObject nod;
+    public float t = 5f;
 	// Use this for initialization
 	void Start () {
 		
@@ -11,6 +13,15 @@ public class wayfindArrow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(t <= 0)
+        {
+            nod.SetActive(true);
+            t = -1f;
+        }
+        else if (t != -1f)
+        {
+            t -= Time.deltaTime;
+        }
         if (Healthpack)
         {
             transform.LookAt(Healthpack.transform);

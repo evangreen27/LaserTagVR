@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Collections;
 
 public class selectionray : MonoBehaviour
 {
@@ -14,8 +15,10 @@ public class selectionray : MonoBehaviour
     public GameObject PISTOL;
     public GameObject menucanvas;
     public GameObject shotprefab;
+    public GameObject control;
 
     public Material lasercolor;
+    public GameObject hm;
 
     //public Color origColor = black;
 
@@ -101,6 +104,11 @@ public class selectionray : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        control = GameObject.Find("ControlObjects");
+    }
+
     void Update()
     {
         Transform pointer = Pointer;
@@ -144,12 +152,153 @@ public class selectionray : MonoBehaviour
                     GameObject.Find("Keypad").transform.GetChild(i).GetComponent<Button>().image.color = Color.black;
                 }
                 hit.collider.gameObject.GetComponent<Button>().image.color = Color.gray;
+                GameObject other = hit.collider.gameObject;
+
+                if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger) || Input.GetMouseButton(0))
+                {
+                    if (other.gameObject.name == "OneBtn")
+                    {
+                        print(control.GetComponent<SpawnTargets>().selected);
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "1";
+                    }
+                    else if (other.gameObject.name == "TwoBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "2";
+                    }
+                    else if (other.gameObject.name == "ThreeBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "3";
+                    }
+                    else if (other.gameObject.name == "FourBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "4";
+                    }
+                    else if (other.gameObject.name == "FiveBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "5";
+                    }
+                    else if (other.gameObject.name == "SixBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "6";
+                    }
+                    else if (other.gameObject.name == "SevenBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "7";
+                    }
+                    else if (other.gameObject.name == "EightBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "8";
+                    }
+                    else if (other.gameObject.name == "NineBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "9";
+                    }
+                    else if (other.gameObject.name == "ZeroBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "0";
+                    }
+                    else if (other.gameObject.name == "ClearBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text = "";
+                    }
+                    else if (other.gameObject.name == "DotBtn")
+                    {
+                        control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += ".";
+                    }
+                    else if (other.gameObject.name == "EnterBtn")
+                    {
+                        if (control.GetComponent<SpawnTargets>().selected.gameObject.name == "SpawnRate")
+                        {
+                            print(float.Parse(control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text));
+                            control.GetComponent<SpawnTargets>().spawnrate = float.Parse(control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text);
+                        }
+                        else if (control.GetComponent<SpawnTargets>().selected.gameObject.name == "TargetSize")
+                        {
+                            control.GetComponent<SpawnTargets>().targetSize = int.Parse(control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text);
+                        }
+                    }
+
+                }
             }
             else if (hit.collider.gameObject.CompareTag("input"))
             {
+
+                if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger) || Input.GetMouseButton(0))
+                {
+
+                    GameObject input = hit.collider.gameObject;
+                    input.gameObject.GetComponent<UnityEngine.UI.InputField>().Select();
+                    control.GetComponent<SpawnTargets>().selected = input;
+                }
+
                 GameObject.Find("SpawnRate").GetComponent<InputField>().image.color = Color.black;
                 GameObject.Find("TargetSize").GetComponent<InputField>().image.color = Color.black;
                 hit.collider.gameObject.GetComponent<InputField>().image.color = Color.gray;
+            }
+
+            else if (hit.collider.gameObject.CompareTag("dropdown"))
+            {
+
+                if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger) || Input.GetMouseButton(0))
+                {
+                    GameObject dropdown = hit.collider.gameObject;
+                    if (dropdown.transform.childCount != 3)
+                    {
+                        dropdown.GetComponent<Dropdown>().Hide();
+                    }
+                    else
+                    {
+                        dropdown.GetComponent<Dropdown>().Show();
+                        print(dropdown.transform.Find("Dropdown List"));
+                        BoxCollider c = dropdown.transform.Find("Dropdown List/Viewport/Content/Item 0: Blue").gameObject.AddComponent<BoxCollider>();
+                        c.size = new Vector3(180, 20, 10);
+                        c.isTrigger = true;
+                        BoxCollider d = dropdown.transform.Find("Dropdown List/Viewport/Content/Item 1: Red").gameObject.AddComponent<BoxCollider>();
+                        d.size = new Vector3(180, 20, 10);
+                        d.isTrigger = true;
+                        BoxCollider e = dropdown.transform.Find("Dropdown List/Viewport/Content/Item 2: Purple").gameObject.AddComponent<BoxCollider>();
+                        e.size = new Vector3(180, 20, 10);
+                        e.isTrigger = true;
+
+                        ColorBlock cb = dropdown.transform.Find("Dropdown List/Viewport/Content/Item 0: Blue").GetComponent<Toggle>().colors;
+                        cb.highlightedColor = Color.blue;
+                        cb.normalColor = Color.blue;
+                        dropdown.transform.Find("Dropdown List/Viewport/Content/Item 0: Blue").GetComponent<Toggle>().colors = cb;
+                        cb = dropdown.transform.Find("Dropdown List/Viewport/Content/Item 1: Red").GetComponent<Toggle>().colors;
+                        cb.normalColor = Color.red;
+                        cb.highlightedColor = Color.red;
+                        dropdown.transform.Find("Dropdown List/Viewport/Content/Item 1: Red").GetComponent<Toggle>().colors = cb;
+                        cb = dropdown.transform.Find("Dropdown List/Viewport/Content/Item 2: Purple").GetComponent<Toggle>().colors;
+                        cb.normalColor = Color.magenta;
+                        cb.highlightedColor = Color.magenta;
+                        dropdown.transform.Find("Dropdown List/Viewport/Content/Item 2: Purple").GetComponent<Toggle>().colors = cb;
+                    }
+                }
+            }
+            else if (hit.collider.gameObject.name == "Item 0: Blue")
+            {
+                if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger) || Input.GetMouseButton(0))
+                {
+                    lasercolor.color = Color.blue;
+                    GameObject.Find("Labelcolo").GetComponent<Text>().text = "Blue";
+                }
+                //hit.collider.gameObject.GetComponent<>
+            }
+            else if (hit.collider.gameObject.name == "Item 1: Red")
+            {
+                if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger) || Input.GetMouseButton(0))
+                {
+                    lasercolor.color = Color.red;
+                    GameObject.Find("Labelcolo").GetComponent<Text>().text = "Red";
+                }
+            }
+            else if (hit.collider.gameObject.name == "Item 2: Purple")
+            {
+                if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger) || Input.GetMouseButton(0))
+                {
+                    lasercolor.color = Color.magenta;
+                    GameObject.Find("Labelcolo").GetComponent<Text>().text = "Magenta";
+                }
             }
             else
             {
@@ -165,19 +314,17 @@ public class selectionray : MonoBehaviour
 
 
 
-        if (Input.GetKeyDown(KeyCode.G))
+        if (OVRInput.GetDown(OVRInput.RawButton.LHandTrigger))
         {
             //when first pressing, select an object
             if (menucanvas.activeSelf)
             {
                 menucanvas.SetActive(false);
-                shotprefab.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
                 
             }
             else
             {
                 menucanvas.SetActive(true);
-                shotprefab.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
             }
         }
         if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger) || Input.GetMouseButton(0))
@@ -200,6 +347,8 @@ public class selectionray : MonoBehaviour
                     UMP.SetActive(false);
                     PISTOL.SetActive(false);
                     rightHandAnchor.GetComponent<AudioSource>().Play();
+                    shotprefab.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+                    shotprefab.GetComponent<ShotBehavior>().speed = 40f;
                 }
 
                 else if (name.Contains("Ak-47"))
@@ -211,6 +360,8 @@ public class selectionray : MonoBehaviour
                     UMP.SetActive(false);
                     PISTOL.SetActive(false);
                     leftHandAnchor.GetComponent<AudioSource>().Play();
+                    shotprefab.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+                    shotprefab.GetComponent<ShotBehavior>().speed = 40f;
                 }
 
                 else if (name.Contains("UMP"))
@@ -221,6 +372,8 @@ public class selectionray : MonoBehaviour
                     UMP.SetActive(true);
                     PISTOL.SetActive(false);
                     leftHandAnchor.GetComponent<AudioSource>().Play();
+                    shotprefab.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
+                    shotprefab.GetComponent<ShotBehavior>().speed = 60f;
                 }
 
                 else if (name.Contains("Pistol"))
@@ -231,6 +384,8 @@ public class selectionray : MonoBehaviour
                     UMP.SetActive(false);
                     PISTOL.SetActive(true);
                     leftHandAnchor.GetComponent<AudioSource>().Play();
+                    shotprefab.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
+                    shotprefab.GetComponent<ShotBehavior>().speed = 20f;
                 }
 
                 return;
@@ -303,5 +458,17 @@ public class selectionray : MonoBehaviour
     private void OnApplicationQuit()
     {
         lasercolor.color = Color.blue;
+        shotprefab.transform.localScale = new Vector3(0.02f, 0.02f, 0.02f);
+        shotprefab.GetComponent<ShotBehavior>().speed = 20f;
+    }
+
+
+    IEnumerator Hitmarker()
+    {
+        hm.SetActive(true);
+
+        yield return new WaitForSeconds(0.2f);
+
+        hm.SetActive(false);
     }
 }
