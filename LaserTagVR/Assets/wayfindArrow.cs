@@ -11,7 +11,10 @@ public class wayfindArrow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.LookAt(Healthpack.transform);
-        transform.Rotate(Vector3.up, 90f);
+        if (Healthpack)
+        {
+            transform.LookAt(Healthpack.transform);
+            transform.Rotate(Vector3.up, 90f);
+        }
 	}
 }
