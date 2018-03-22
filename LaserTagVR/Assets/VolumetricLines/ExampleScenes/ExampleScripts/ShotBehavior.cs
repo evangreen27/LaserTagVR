@@ -3,12 +3,18 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class ShotBehavior : MonoBehaviour {
-    GameObject selected;
+    public GameObject selectede;
+    public GameObject selected;
     Vector3 oldpos;
     public GameObject control;
+    public Material lasercolor;
+    public GameObject pop;
+    public GameObject impact;
     // Use this for initialization
     void Start () {
         oldpos = transform.position;
+        control = GameObject.Find("ControlObjects");
+
     }
 	
 	// Update is called once per frame
@@ -23,11 +29,15 @@ public class ShotBehavior : MonoBehaviour {
         {
             if (collisionInfo.gameObject.CompareTag("target"))
             {
+                GameObject g = GameObject.Instantiate(pop, collisionInfo.contacts[0].point, Quaternion.identity);
+                Destroy(g, 3f);
+                GameObject player = GameObject.Find("OVRCameraRig");
+                player.GetComponent<AudioSource>().Play();
                 GameObject scoretext = GameObject.Find("scoretext");
                 float pts = GameObject.Find("ControlObjects").GetComponent<SpawnTargets>().targetsShot++;
                 scoretext.GetComponent<UnityEngine.UI.Text>().text = "Score: " + pts;
                 Destroy(collisionInfo.collider.gameObject);
-                DestroyImmediate(this.gameObject);
+                Destroy(this.gameObject);
             }
             else if(collisionInfo.gameObject.name == "Dropdown")
             {
@@ -43,6 +53,8 @@ public class ShotBehavior : MonoBehaviour {
             }
             else
             {
+                GameObject g = GameObject.Instantiate(impact, collisionInfo.contacts[0].point, Quaternion.identity);
+                Destroy(g, 3f);
                 Vector3 refl = collisionInfo.contacts[0].normal;
                 transform.forward = Vector3.Reflect((transform.position - oldpos).normalized, refl);
                 print(collisionInfo.collider.gameObject.name);
@@ -63,75 +75,103 @@ public class ShotBehavior : MonoBehaviour {
             GameObject dropdown = other.gameObject;
             if (dropdown.transform.childCount != 3)
             {
-                dropdown.GetComponent<Dropdown>().Hide();
+                //dropdown.GetComponent<Dropdown>().Hide();
             }
             else
             {
                 dropdown.GetComponent<Dropdown>().Show();
+                print(dropdown.transform.Find("Dropdown List"));
+                BoxCollider c = dropdown.transform.Find("Dropdown List/Viewport/Content/Item 0: Blue").gameObject.AddComponent<BoxCollider>();
+                c.size = new Vector3(180, 20, 10);
+                c.isTrigger = true;
+                BoxCollider d = dropdown.transform.Find("Dropdown List/Viewport/Content/Item 1: Red").gameObject.AddComponent<BoxCollider>();
+                d.size = new Vector3(180, 20, 10);
+                d.isTrigger = true;
+                BoxCollider e = dropdown.transform.Find("Dropdown List/Viewport/Content/Item 2: Purple").gameObject.AddComponent<BoxCollider>();
+                e.size = new Vector3(180, 20, 10);
+                e.isTrigger = true;
             }
         }
         else if (other.gameObject.name == "TargetSize" || other.gameObject.name == "SpawnRate")
         {
             GameObject input = other.gameObject;
-            selected = input.transform.GetChild(1).gameObject;
-            selected.GetComponent<Text>().text = "";
+            input.gameObject.GetComponent<UnityEngine.UI.InputField>().Select();
+            control.GetComponent<SpawnTargets>().selected = input;
         }
         else if (other.gameObject.name == "OneBtn")
         {
-            selected.GetComponent<Text>().text += "1";
+            print(control.GetComponent<SpawnTargets>().selected);
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "1";
         }
         else if (other.gameObject.name == "TwoBtn")
         {
-            selected.GetComponent<Text>().text += "2";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "2";
         }
         else if (other.gameObject.name == "ThreeBtn")
         {
-            selected.GetComponent<Text>().text += "3";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "3";
         }
         else if (other.gameObject.name == "FourBtn")
         {
-            selected.GetComponent<Text>().text += "4";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "4";
         }
         else if (other.gameObject.name == "FiveBtn")
         {
-            selected.GetComponent<Text>().text += "5";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "5";
         }
         else if (other.gameObject.name == "SixBtn")
         {
-            selected.GetComponent<Text>().text += "6";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "6";
         }
         else if (other.gameObject.name == "SevenBtn")
         {
-            selected.GetComponent<Text>().text += "7";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "7";
         }
         else if (other.gameObject.name == "EightBtn")
         {
-            selected.GetComponent<Text>().text += "8";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "8";
         }
         else if (other.gameObject.name == "NineBtn")
         {
-            selected.GetComponent<Text>().text += "9";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "9";
         }
         else if (other.gameObject.name == "ZeroBtn")
         {
-            selected.GetComponent<Text>().text += "0";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += "0";
         }
         else if (other.gameObject.name == "ClearBtn")
         {
-            selected.GetComponent<Text>().text = "";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text = "";
         }
         else if (other.gameObject.name == "DotBtn")
         {
-            selected.GetComponent<Text>().text += ".";
+            control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text += ".";
         }
         else if (other.gameObject.name == "EnterBtn")
         {
-            if(selected.transform.parent.gameObject.name == "SpawnRate")
-                control.GetComponent<SpawnTargets>().spawnrate = float.Parse(selected.GetComponent<Text>().text);
-            else if(selected.transform.parent.gameObject.name == "TargetSize")
+            if (control.GetComponent<SpawnTargets>().selected.gameObject.name == "SpawnRate")
             {
-                control.GetComponent<SpawnTargets>().targetSize = float.Parse(selected.GetComponent<Text>().text);
+                print(float.Parse(control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text));
+                control.GetComponent<SpawnTargets>().spawnrate = float.Parse(control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text);
+            }
+            else if (control.GetComponent<SpawnTargets>().selected.gameObject.name == "TargetSize")
+            {
+                control.GetComponent<SpawnTargets>().targetSize = int.Parse(control.GetComponent<SpawnTargets>().selected.gameObject.GetComponent<UnityEngine.UI.InputField>().text);
             }
         }
+        else if (other.gameObject.name == "Item 0: Blue")
+        {
+            lasercolor.color = Color.blue;
+        }
+        else if (other.gameObject.name == "Item 1: Red")
+        {
+            lasercolor.color = Color.red;
+        }
+        else if (other.gameObject.name == "Item 2: Purple")
+        {
+            lasercolor.color = Color.magenta;
+        }
     }
+
+
 }

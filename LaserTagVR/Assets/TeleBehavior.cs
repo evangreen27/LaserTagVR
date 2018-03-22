@@ -26,7 +26,7 @@ public class TeleBehavior : MonoBehaviour
         {
             print(collisionInfo.collider.gameObject);
             float y = player.transform.position.y;
-            player.transform.position = new Vector3(collisionInfo.contacts[0].point.x,y, collisionInfo.contacts[0].point.z);
+            player.transform.position = new Vector3(collisionInfo.contacts[0].point.x, collisionInfo.contacts[0].point.y + 5, collisionInfo.contacts[0].point.z);
             Destroy(this);
         }
     }

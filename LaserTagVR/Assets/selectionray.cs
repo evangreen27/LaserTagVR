@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class selectionray : MonoBehaviour
@@ -11,6 +12,12 @@ public class selectionray : MonoBehaviour
     public GameObject AK;
     public GameObject UMP;
     public GameObject PISTOL;
+    public GameObject menucanvas;
+    public GameObject shotprefab;
+
+    public Material lasercolor;
+
+    //public Color origColor = black;
 
     public Transform leftHandAnchor = null;
     public Transform rightHandAnchor = null;
@@ -64,7 +71,7 @@ public class selectionray : MonoBehaviour
             lineRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             lineRenderer.receiveShadows = false;
             lineRenderer.widthMultiplier = 0.02f;
-            lineRenderer.tag = "raycast";
+            lineRenderer.tag = "ignore";
         }
     }
 
@@ -127,6 +134,52 @@ public class selectionray : MonoBehaviour
             //print(hit.collider.gameObject.transform.name);
             //check if the trigger is held, if so then move the object to the xy position of the ray?
         }
+        //if (OVRInput.GetUp(OVRInput.RawButton.LHandTrigger))
+        if (menucanvas.activeSelf)
+        {
+            if (hit.collider.gameObject.CompareTag("button"))
+            {
+                for (int i = 0; i < GameObject.Find("Keypad").transform.childCount; i++)
+                {
+                    GameObject.Find("Keypad").transform.GetChild(i).GetComponent<Button>().image.color = Color.black;
+                }
+                hit.collider.gameObject.GetComponent<Button>().image.color = Color.gray;
+            }
+            else if (hit.collider.gameObject.CompareTag("input"))
+            {
+                GameObject.Find("SpawnRate").GetComponent<InputField>().image.color = Color.black;
+                GameObject.Find("TargetSize").GetComponent<InputField>().image.color = Color.black;
+                hit.collider.gameObject.GetComponent<InputField>().image.color = Color.gray;
+            }
+            else
+            {
+                for (int i = 0; i < GameObject.Find("Keypad").transform.childCount; i++)
+                {
+                    GameObject.Find("Keypad").transform.GetChild(i).GetComponent<Button>().image.color = Color.black;
+                }
+                GameObject.Find("SpawnRate").GetComponent<InputField>().image.color = Color.black;
+                GameObject.Find("TargetSize").GetComponent<InputField>().image.color = Color.black;
+            }
+        }
+            
+
+
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            //when first pressing, select an object
+            if (menucanvas.activeSelf)
+            {
+                menucanvas.SetActive(false);
+                shotprefab.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+                
+            }
+            else
+            {
+                menucanvas.SetActive(true);
+                shotprefab.transform.localScale = new Vector3(0.005f, 0.005f, 0.005f);
+            }
+        }
         if (OVRInput.GetDown(OVRInput.RawButton.RHandTrigger) || Input.GetMouseButton(0))
         {
             //when first pressing, select an object
@@ -146,15 +199,18 @@ public class selectionray : MonoBehaviour
                     AK.SetActive(false);
                     UMP.SetActive(false);
                     PISTOL.SetActive(false);
+                    rightHandAnchor.GetComponent<AudioSource>().Play();
                 }
 
-                else if (name.Contains("Ak"))
+                else if (name.Contains("Ak-47"))
                 {
+                    print("ak");
                     Destroy(hit.collider.gameObject);
                     M4.SetActive(false);
                     AK.SetActive(true);
                     UMP.SetActive(false);
                     PISTOL.SetActive(false);
+                    leftHandAnchor.GetComponent<AudioSource>().Play();
                 }
 
                 else if (name.Contains("UMP"))
@@ -164,6 +220,7 @@ public class selectionray : MonoBehaviour
                     AK.SetActive(false);
                     UMP.SetActive(true);
                     PISTOL.SetActive(false);
+                    leftHandAnchor.GetComponent<AudioSource>().Play();
                 }
 
                 else if (name.Contains("Pistol"))
@@ -173,12 +230,13 @@ public class selectionray : MonoBehaviour
                     AK.SetActive(false);
                     UMP.SetActive(false);
                     PISTOL.SetActive(true);
+                    leftHandAnchor.GetComponent<AudioSource>().Play();
                 }
 
                 return;
             }
 
-
+            return;
             selectedObj = hit.collider.gameObject;
             startingz = Vector3.Distance(this.transform.position, hit.collider.gameObject.transform.position);
             startingrot = hit.collider.gameObject.transform.rotation;
@@ -240,5 +298,10 @@ public class selectionray : MonoBehaviour
             }
             selectedObj.transform.SetPositionAndRotation(laserPointer.GetPoint(startingz), startingrot);
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        lasercolor.color = Color.blue;
     }
 }

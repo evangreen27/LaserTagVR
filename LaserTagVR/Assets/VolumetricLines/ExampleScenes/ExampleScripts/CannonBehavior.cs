@@ -21,13 +21,13 @@ public class CannonBehavior : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.R))
 		{
 			GameObject go = GameObject.Instantiate(m_shotPrefab, m_muzzle.position, m_muzzle.rotation) as GameObject;
-			GameObject.Destroy(go, 3f);
+			GameObject.Destroy(go, 10f);
 		}
 
         if (OVRInput.GetDown(OVRInput.RawButton.LIndexTrigger))
         {
             GameObject ge = GameObject.Instantiate(m_telePrefab, m_muzzle.position, m_muzzle.rotation) as GameObject;
-            GameObject.Destroy(ge, 5f);
+            GameObject.Destroy(ge, 10f);
         }
     }
 
